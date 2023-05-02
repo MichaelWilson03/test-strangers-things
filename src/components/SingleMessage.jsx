@@ -6,7 +6,6 @@ export default function SingleMessage() {
   const { user, posts } = useOutletContext();
   const message = posts.find((post) => post.messages === userId);
 
-  console.log(message);
   return (
     <div className="single-message">
       <h1>{message.title}</h1>

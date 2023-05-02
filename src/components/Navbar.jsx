@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Navbar({ user, setUser, setToken }) {
   let username = user.username;
-  if (user._id) console.log(user);
-  console.log(username);
+  // if (user._id) console.log(user);
+  // console.log(username);
   function handleLogout() {
     // console.log("logging out");
     localStorage.removeItem("token");

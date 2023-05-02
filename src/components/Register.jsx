@@ -33,7 +33,6 @@ export default function Register() {
         }),
       });
       const result = await response.json();
-      // console.log(result);
       if (!result.success) {
         setError(result.error.message);
         return;
@@ -43,7 +42,6 @@ export default function Register() {
       localStorage.setItem("token", result.data.token);
       navigate("/");
     } catch (error) {
-      // console.log(error);
     }
   }
 

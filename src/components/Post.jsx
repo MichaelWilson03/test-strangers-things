@@ -5,7 +5,7 @@ import { BASE_URL } from "../lib/util";
 export default function Post() {
   const { postId } = useParams();
   let token = localStorage.getItem("token");
-  console.log(postId);
+  // console.log(postId);
   const {
     posts,
     content,
@@ -18,7 +18,7 @@ export default function Post() {
   } = useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
-  console.log(post);
+
   async function handleMessage(e) {
     // e.preventDefault();
 
@@ -42,7 +42,7 @@ export default function Post() {
         setContent("");
         Navigate("/posts");
       }
-      console.log(result);
+      // console.log(result);
     } catch (err) {
       console.error(err);
     }

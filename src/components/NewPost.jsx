@@ -37,7 +37,6 @@ export default function NewPost() {
         }),
       });
       const result = await response.json();
-      console.log(result);
       if (!result.success) {
         console.log(result.error.message);
         return;

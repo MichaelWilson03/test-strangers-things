@@ -1,0 +1,99 @@
+body {
+  background-color: beige;
+}
+
+a {
+  margin: 1rem;
+}
+.navbar {
+  background-color: red;
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 15px;
+}
+#pages {
+  font-size: 20px;
+}
+#logo {
+  color: blue;
+  font-size: 30px;
+  flex-wrap: nowrap;
+}
+#welcome_user {
+  color: blue;
+  font-weight: bolder;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  background-color: blue;
+  color: white;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.register_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 15px;
+}
+
+.login_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 15px;
+}
+
+.new_post_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 15px;
+}
+
+.new_post_link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 15px;
+}
+.new_user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  font-weight: bolder;
+  font-size: 30px;
+  margin: 15px;
+}
+
+.profile_page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 30px;
+  margin: 15px;
+}

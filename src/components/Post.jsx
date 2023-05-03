@@ -15,6 +15,7 @@ export default function Post() {
   } = useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
+  // const postMessages = user?.messages?.filter(p => p.post._id === postId);
 
   async function handleMessage(e) {
     e.preventDefault();
@@ -28,8 +29,7 @@ export default function Post() {
         },
         body: JSON.stringify({
           message: {
-            content: message,
-            fromUser: user.username
+            content: message
           }
         }),
       });
@@ -69,6 +69,16 @@ export default function Post() {
             <button type="submit">Edit</button>
           </form>
         )}
+      </div>
+
+      <div>
+          {post.messages.length > 0 && 
+          post.messages.map((msg) => (
+            <div key={msg._id}>
+              <h2>{msg.content}</h2>
+              <h4>{msg.fromUser.username}</h4>
+            </div>
+          ))}
       </div>
     </div>
   );

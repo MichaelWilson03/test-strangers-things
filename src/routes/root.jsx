@@ -22,7 +22,12 @@ export default function Root() {
     async function fetchPosts() {
       try {
         setIsLoadingPosts(true);
-        const response = await fetch(`${BASE_URL}/posts`);
+        const response = await fetch(`${BASE_URL}/posts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localToken}`,
+          }
+        });
         const info = await response.json();
   
         setPosts(info.data.posts);

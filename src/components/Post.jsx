@@ -5,7 +5,7 @@ import { BASE_URL } from "../lib/util";
 export default function Post() {
   const { postId } = useParams();
   let token = localStorage.getItem("token");
-  // console.log(postId);
+  
   const {
     posts,
     content,
@@ -15,12 +15,13 @@ export default function Post() {
     setMessage,
     fromUser,
     setFromUser,
+    isLoadingPosts
   } = useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
 
   async function handleMessage(e) {
-    // e.preventDefault();
+    e.preventDefault();
 
     try {
       const response = await fetch(`${BASE_URL}/posts/${postId}/messages`, {
@@ -42,14 +43,16 @@ export default function Post() {
         setContent("");
         Navigate("/posts");
       }
-      // console.log(result);
     } catch (err) {
       console.error(err);
     }
   }
-  useEffect(() => {
-    // handleMessage();
-  });
+  
+  if(isLoadingPosts)return (
+    <div>
+      Loading
+    </div>
+  )
   return (
     <div>
       <h2>{post.title}</h2>

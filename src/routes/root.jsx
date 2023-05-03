@@ -12,6 +12,7 @@ export default function Root() {
   const [fromUser, setFromUser] = useState("");
   const [isAuthor, setIsAuthor] = useState(false);
   const [content, setContent] = useState("");
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const navigate = useNavigate;
   const localToken = localStorage.getItem("token");
   const { postId } = useParams();
@@ -20,19 +21,22 @@ export default function Root() {
   useEffect(() => {
     async function fetchPosts() {
       try {
+        setIsLoadingPosts(true);
         const response = await fetch(`${BASE_URL}/posts`);
   
         const info = await response.json();
   
         setPosts(info.data.posts);
         setMessage(info.data.message);
-        return info;
+        // return posts;
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoadingPosts(false);
       }
     }
     fetchPosts();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     async function myData() {
@@ -49,7 +53,6 @@ export default function Root() {
           if (result.success) {
             setUser(result.data);
           }
-          // console.log(result);
         } catch (err) {
           console.error(err);
         }
@@ -104,6 +107,7 @@ export default function Root() {
           token,
           user,
           setPosts,
+          isLoadingPosts
         }}
       />
     </div>

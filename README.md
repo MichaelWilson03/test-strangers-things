@@ -53,22 +53,41 @@ And also, since you'll need them for fetch requests:
 * makeHeaders - which creates a headers object with our without the bearer token depending on what is on state
 For now, there are some "testing" API routes that let you see if you're currently logged in. You can hit them with fetch with headers (both logged in and logged out), and if you're setting them correctly you'll see the different responses you'll get.
 You should also provide feedback on the form if the user provides incorrect credentials, as well as if the user tries to provide bad usernames or passwords.
+
+
 POST FORM
+
 You should make a form for users to make new listings. The fields for the form should match the fields that the API expects, and the submit button should be intercepted so that you can create the right fetch request.
 This form could live in an aside that you show only to logged in users, or on submit you could show a modal that requires a person to sign in/sign up before you create the post. If you choose to show the form for logged in users only, make sure to update the interface whenever the user logs in... not only on page load.
 The returned object is the new post. Since your state is keeping track of all available posts, it might be wise to add the returned one to that array and set state accordingly when it comes back.
+
+
 POSTS VIEW, UPGRADED WITH AUTHENTICATION
+
+
 Next you should work on providing a pleasant and "upgraded" view for all active posts: Currently, the app shows the posts, but we're not using all the available functionality of this route yet. When you make a GET request to /api/posts, if you don't send a token, the API will only provide you with all posts.
 However, if you send a token, the posts made by the active user will also have the messages on them included. There's also an additional field provided by the API, isAuthor, which is only true for posts made by the user represented by the auth token. Make sure to suppress/show certain functionality for posts based on whether or not the current user is in fact the author.
+
+
 DELETE BUTTON
+
+
 Your posts should have a way for the active user to delete them, only if isAuthor is true for the post. Go ahead and add that now.
 You'll also have to add a click handler to make that DELETE request. For each post, the delete handler will need a way to recover the post._id to help form the correct URL for the request.
 On successful delete, make sure to remove that post from the page as well as from the array that is holding all posts in state.
+
+
 MESSAGES FORM
+
+
 For any post, you should add a form to send a message to the post author, only if there is a logged in user and the logged in user is not the one who made it.
 The message form really only needs a text input, and a button to create the message.
 Again, like the delete button, the submit handler will need a way to know how to form the correct URL so that the API responds, so make sure you're recovering it from the post element, if you're attaching it as data to begin with.
+
+
 LOADING THE USER OBJECT ON PAGE LOAD
+
+
 On page load, if there is a user logged in (i.e. if there is a token in localStorage that is subsequently loaded into state), you can make a GET request to /api/users/me and be given a user object. It will have all messages they've received, as well as all posts they've made (with messages partitioned by post).
 It would be most useful to do this as part of your bootstrapping whenever the page is loaded.
 SEARCH FORM

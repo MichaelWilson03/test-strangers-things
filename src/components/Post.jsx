@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
@@ -8,12 +8,9 @@ export default function Post() {
   
   const {
     posts,
-    content,
-    setPosts,
-    user,
-    setContent,
+    message,
     setMessage,
-    fromUser,
+    user,
     setFromUser,
     isLoadingPosts
   } = useOutletContext();
@@ -31,21 +28,26 @@ export default function Post() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          content: content,
-          fromUser: fromUser,
+          message: {
+            content: message,
+            fromUser: user.username
+          }
         }),
       });
       const result = await response.json();
       if (result.success) {
-        setPosts([...posts, result.data]);
-        setMessage([...posts, result.data.message]);
-        setFromUser([...posts, result.data.fromUser]);
-        setContent("");
-        Navigate("/posts");
+        setMessage("");
+        setFromUser([...posts, result.data.message.fromUser]);
+        
+        // Navigate("/posts");
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  function handleChange(e) {
+    setMessage(e.target.value);
   }
   
   if(isLoadingPosts)return (
@@ -63,14 +65,14 @@ export default function Post() {
       <div>
         {user._id !== post.author._id && (
           <form onSubmit={handleMessage}>
-            <input type="text" value={content} onChange={handleMessage} />
+            <input type="text" value={message} onChange={handleChange} />
             <button type="submit">Send Message</button>
           </form>
         )}
 
         {user._id === post.author._id && (
           <form onSubmit={handleMessage}>
-            <input type="text" value={content} onChange={handleMessage} />
+            <input type="text" value={message} onChange={handleChange} />
             <button type="submit">Edit</button>
           </form>
         )}

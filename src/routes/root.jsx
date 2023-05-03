@@ -27,7 +27,7 @@ export default function Root() {
         const info = await response.json();
   
         setPosts(info.data.posts);
-        setMessage(info.data.message);
+       
         // return posts;
       } catch (err) {
         console.log(err);

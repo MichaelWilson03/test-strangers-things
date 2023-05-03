@@ -22,7 +22,7 @@ export default function Posts() {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    if (setPosts === "") {
+    if (event.target.value === "") {
       setPosts(posts);
     }
   };

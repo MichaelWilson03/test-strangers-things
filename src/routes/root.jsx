@@ -23,12 +23,10 @@ export default function Root() {
       try {
         setIsLoadingPosts(true);
         const response = await fetch(`${BASE_URL}/posts`);
-  
         const info = await response.json();
   
         setPosts(info.data.posts);
        
-        // return posts;
       } catch (err) {
         console.log(err);
       } finally {
@@ -60,34 +58,6 @@ export default function Root() {
     }
     myData(token, setToken, setUser, setMessage);
   }, [token, setToken, setUser, setMessage, postId]);
-  // useEffect(() => {
-  //   async function postMessage() {
-  //     try {
-  //       const response = await fetch(`${BASE_URL}/posts/${postId}`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify({
-  //           content: content,
-  //           fromUser: fromUser,
-  //         }),
-  //       });
-  //       const result = await response.json();
-  //       if (result.success) {
-  //         setPosts([...posts, result.data]);
-  //         setContent(content);
-  //         setFromUser(fromUser);
-  //       }
-  //       // console.log(result);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  //   // postMessage();
-  // }, [token, setFromUser, setUser, posts, postId, content]);
-
 
   return (
     <div>

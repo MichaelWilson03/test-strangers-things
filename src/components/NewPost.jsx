@@ -3,11 +3,8 @@ import Button from "@mui/material/Button";
 import { BASE_URL } from "../lib/util";
 import {
   useNavigate,
-  useOutletContext,
   useParams,
-  Link,
 } from "react-router-dom";
-import { useEffect } from "react";
 
 export default function NewPost() {
   const [title, setTitle] = useState("");

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Navigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
 export default function Post() {
@@ -38,18 +37,12 @@ export default function Post() {
       if (result.success) {
         setMessage("");
         setFromUser([...posts, result.data.message.fromUser]);
-        
-        // Navigate("/posts");
       }
     } catch (err) {
       console.error(err);
     }
   }
 
-  function handleChange(e) {
-    setMessage(e.target.value);
-  }
-  
   if(isLoadingPosts)return (
     <div>
       Loading
@@ -65,14 +58,14 @@ export default function Post() {
       <div>
         {user._id !== post.author._id && (
           <form onSubmit={handleMessage}>
-            <input type="text" value={message} onChange={handleChange} />
+            <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
             <button type="submit">Send Message</button>
           </form>
         )}
 
         {user._id === post.author._id && (
           <form onSubmit={handleMessage}>
-            <input type="text" value={message} onChange={handleChange} />
+            <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
             <button type="submit">Edit</button>
           </form>
         )}

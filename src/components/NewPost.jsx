@@ -46,7 +46,7 @@ export default function NewPost() {
       console.error(err);
     }
   }
-  useEffect(() => {}), [];
+  
   return (
     <>
       <div>

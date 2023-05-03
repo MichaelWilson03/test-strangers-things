@@ -18,11 +18,9 @@ export default function Profile() {
         const msgToMe = await Promise.resolve(
           user?.messages?.filter((message) => message.fromUser._id !== user._id)
         );
-        console.log("msgToMe:", msgToMe);
         const msgFromMe = await Promise.resolve(
           user?.messages?.filter((message) => message.fromUser._id === user._id)
         );
-        console.log("msgFromMe:", msgFromMe);
       } catch (error) {
         console.log(error);
       }

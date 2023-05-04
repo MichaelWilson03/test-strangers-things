@@ -8,6 +8,7 @@ export default function Profile() {
   const { postId } = useParams();
 
   const { posts } = useOutletContext();
+  let token = localStorage.getItem("token");
   // const { message } = useOutletContext();
 
   const msgsToMe = user?.messages?.filter(
@@ -18,39 +19,63 @@ export default function Profile() {
   );
 
   return (
-    <div className="container">
-      <h1>Welcome {user.username}!</h1>
-      <br /> <h2>Your Messages:</h2>
-      <br />
-      <ul>
-        {user._id &&
-          msgsToMe.map((message) => (
-            <>
-              <div>
-                <div className="message" key={posts._id}>
-                  {message.content}{" "}
-                </div>
-              </div>
-              <h3>From: {message.fromUser.username}</h3>
-            </>
-          ))}
-      </ul>
-      <h2>Messages Sent:</h2>
-      <br />
-      <ul>
-        {user._id &&
-          msgFromMe.map((message) => (
-            // user.messages.map((message) => (
-            <>
-              <div>
-                <div className="message" key={posts._id}>
-                  {message.content}{" "}
-                </div>
-              </div>
-              <h3>From: {message.fromUser.username}</h3>
-            </>
-          ))}
-      </ul>
-    </div>
+    <>
+      {token && (
+        <div className="container">
+          <h1>Welcome {user.username}!</h1>
+          <br /> <h2>Your Messages:</h2>
+          <br />
+          <ul>
+            {user._id &&
+              msgsToMe.map((message) => (
+                <>
+                  <div>
+                    <div className="message" key={posts._id}>
+                      <span className="post_title">Regarding: </span>
+                      <br />
+                      {message.content}
+                    </div>
+                  </div>
+                  <h3>From: {message.fromUser.username}</h3>
+                </>
+              ))}
+          </ul>
+          <h2>Messages Sent:</h2>
+          <br />
+          <ul>
+            {user._id &&
+              msgFromMe.map((message) => (
+                // user.messages.map((message) => (
+                <>
+                  <div>
+                    <div className="message" key={posts._id}>
+                      {message.content}{" "}
+                    </div>
+                  </div>
+                  <h3>From: {message.fromUser.username}</h3>
+                </>
+              ))}
+          </ul>
+        </div>
+      )}
+      <div className="new_user">
+        {!token && (
+          <>
+            <Link
+              to={"/login"}
+              style={{ color: "blue", textDecoration: "none" }}
+            >
+              Login
+            </Link>
+            <Link
+              to={"/register"}
+              style={{ color: "blue", textDecoration: "none" }}
+            >
+              Register
+            </Link>
+          </>
+        )}
+      </div>
+    </>
   );
 }

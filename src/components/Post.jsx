@@ -41,84 +41,86 @@ export default function Post() {
   }
 
   if (isLoadingPosts) return <div>Loading</div>;
-  <Navigate to={`/posts/`} />;
+
   return (
     <div className="single-post">
       <h2>{post.title}</h2>
       <p>{post.description}</p>
       <h4>Price: {post.price}</h4>
       <h4>Post created by: {post.author.username}</h4>
-
-      <div>
-        {user._id !== post.author._id && (
-          <>
-            <form onSubmit={handleMessage}>
-              <TextField
-                required
-                fullWidth
-                label="Title"
-                variant="outlined"
-                value={message}
-                onChange={(event) => {
-                  setMessage(event.target.value);
-                }}
-              />
-              {/* <input
+      <span>
+        {user._id && (
+          <div>
+            {user._id !== post.author._id && (
+              <>
+                <form onSubmit={handleMessage}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Title"
+                    variant="outlined"
+                    value={message}
+                    onChange={(event) => {
+                      setMessage(event.target.value);
+                    }}
+                  />
+                  {/* <input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               /> */}
-              <Button
-                onChange={(e) => setMessage(e.target.value)}
-                fullWidth
-                variant="outlined"
-                color="primary"
-                type="submit"
-                margin="large"
-              >
-                Send Message
-              </Button>
-            </form>
-            <h2 className="messages">Messages You've Sent:</h2>
-          </>
-        )}
+                  <Button
+                    onChange={(e) => setMessage(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    color="primary"
+                    type="submit"
+                    margin="large"
+                  >
+                    Send Message
+                  </Button>
+                </form>
+                <h2 className="messages">Messages You've Sent:</h2>
+              </>
+            )}
 
-        {user._id === post.author._id && (
-          <form onSubmit={handleMessage}>
-            <TextField
-              required
-              fullWidth
-              label="Title"
-              variant="outlined"
-              value={message}
-              onChange={(event) => {
-                setMessage(event.target.value);
-              }}
-            />
-            <Button
-              onChange={(e) => setMessage(e.target.value)}
-              fullWidth
-              variant="outlined"
-              color="primary"
-              type="submit"
-              margin="large"
-            >
-              Edit Your Message
-            </Button>
-          </form>
+            {user._id === post.author._id && (
+              <form onSubmit={handleMessage}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Title"
+                  variant="outlined"
+                  value={message}
+                  onChange={(event) => {
+                    setMessage(event.target.value);
+                  }}
+                />
+                <Button
+                  onChange={(e) => setMessage(e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  margin="large"
+                >
+                  Edit Your Message
+                </Button>
+              </form>
+            )}
+            <div>
+              {user._id === post.author._id ||
+                (post.messages.length > 0 &&
+                  post.messages.map((msg) => (
+                    <div key={msg._id}>
+                      <h2>Message: {msg.content}</h2>
+                      <h3>From: {msg.fromUser.username}</h3>
+                    </div>
+                  )))}
+            </div>
+          </div>
         )}
-      </div>
-
-      <div>
-        {user._id === post.author._id ||
-          (post.messages.length > 0 &&
-            post.messages.map((msg) => (
-              <div key={msg._id}>
-                <h2>Message: {msg.content}</h2>
-                <h3>From: {msg.fromUser.username}</h3>
-              </div>
-            )))}
-      </div>
+      </span>
     </div>
   );
 }

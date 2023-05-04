@@ -20,7 +20,7 @@ export default function Profile() {
 
   return (
     <>
-      {token && (
+      {user._id && (
         <div className="container">
           <h1>Welcome {user.username}!</h1>
           <br /> <h2>Your Messages:</h2>
@@ -59,10 +59,10 @@ export default function Profile() {
         </div>
       )}
       <div>
-        <h1 className="home_page">Welcome To Stranger's Things!</h1>
         <br />
-        {!token && (
+        {!user._id && (
           <>
+            <h1>Welcome to Stranger's Things!</h1>
             <div className="new_user">
               <br />
               <Link

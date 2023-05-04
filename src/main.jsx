@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         path: "/posts/:postId/messages ",
         element: <PostMessage />,
       },
-      { path: "profile/:userId", element: <SingleMessage /> },
+      // { path: "profile/:userId", element: <SingleMessage /> },
     ],
   },
 ]);

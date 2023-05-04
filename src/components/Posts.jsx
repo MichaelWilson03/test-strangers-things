@@ -18,15 +18,13 @@ export default function Posts() {
       setPosts(posts);
       setSearchTerm("");
     }
-    console.log(posts);
   }, [searchTerm]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    if (setPosts === "") {
+    if (event.target.value === "") {
       setPosts(posts);
     }
-    console.log(event.target.value);
   };
 
   return (

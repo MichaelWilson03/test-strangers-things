@@ -97,3 +97,15 @@ a {
   font-size: 30px;
   margin: 15px;
 }
+.messages {
+  text-decoration: underline;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* font-weight: bolder; */
+}
+.single-post {
+  font-size: 20px;
+  margin: 20px;
+}

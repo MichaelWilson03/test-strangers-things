@@ -1,13 +1,7 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import { BASE_URL } from "../lib/util";
-import {
-  useNavigate,
-  useOutletContext,
-  useParams,
-  Link,
-} from "react-router-dom";
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
@@ -37,7 +31,6 @@ export default function NewPost() {
         }),
       });
       const result = await response.json();
-      console.log(result);
       if (!result.success) {
         console.log(result.error.message);
         return;
@@ -47,7 +40,7 @@ export default function NewPost() {
       console.error(err);
     }
   }
-  useEffect(() => {}), [];
+
   return (
     <>
       <div>

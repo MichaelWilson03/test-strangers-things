@@ -1,26 +1,21 @@
-import { useEffect } from "react";
-import { Navigate, useOutletContext } from "react-router-dom";
+import NativeSelectInput from "@mui/material/NativeSelect/NativeSelectInput";
+import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 export default function Post() {
   const { postId } = useParams();
   let token = localStorage.getItem("token");
-  console.log(postId);
-  const {
-    posts,
-    content,
-    setPosts,
-    user,
-    setContent,
-    setMessage,
-    fromUser,
-    setFromUser,
-  } = useOutletContext();
+
+  const { posts, message, setMessage, user, setFromUser, isLoadingPosts } =
+    useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
-  console.log(post);
+  // const postMessages = user?.messages?.filter(p => p.post._id === postId);
+
   async function handleMessage(e) {
-    // e.preventDefault();
+    e.preventDefault();
 
     try {
       const response = await fetch(`${BASE_URL}/posts/${postId}/messages`, {
@@ -30,28 +25,25 @@ export default function Post() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          content: content,
-          fromUser: fromUser,
+          message: {
+            content: message,
+          },
         }),
       });
       const result = await response.json();
       if (result.success) {
-        setPosts([...posts, result.data]);
-        setMessage([...posts, result.data.message]);
-        setFromUser([...posts, result.data.fromUser]);
-        setContent("");
-        Navigate("/posts");
+        setMessage("");
+        setFromUser([...posts, result.data.message.fromUser]);
       }
-      console.log(result);
     } catch (err) {
       console.error(err);
     }
   }
-  useEffect(() => {
-    // handleMessage();
-  });
+
+  if (isLoadingPosts) return <div>Loading</div>;
+  <Navigate to={`/posts/`} />;
   return (
-    <div>
+    <div className="single-post">
       <h2>{post.title}</h2>
       <p>{post.description}</p>
       <h4>Price: {post.price}</h4>
@@ -59,18 +51,73 @@ export default function Post() {
 
       <div>
         {user._id !== post.author._id && (
-          <form onSubmit={handleMessage}>
-            <input type="text" value={content} onChange={handleMessage} />
-            <button type="submit">Send Message</button>
-          </form>
+          <>
+            <form onSubmit={handleMessage}>
+              <TextField
+                required
+                fullWidth
+                label="Title"
+                variant="outlined"
+                value={message}
+                onChange={(event) => {
+                  setMessage(event.target.value);
+                }}
+              />
+              {/* <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              /> */}
+              <Button
+                onChange={(e) => setMessage(e.target.value)}
+                fullWidth
+                variant="outlined"
+                color="primary"
+                type="submit"
+                margin="large"
+              >
+                Send Message
+              </Button>
+            </form>
+            <h2 className="messages">Messages You've Sent:</h2>
+          </>
         )}
 
         {user._id === post.author._id && (
           <form onSubmit={handleMessage}>
-            <input type="text" value={content} onChange={handleMessage} />
-            <button type="submit">Edit</button>
+            <TextField
+              required
+              fullWidth
+              label="Title"
+              variant="outlined"
+              value={message}
+              onChange={(event) => {
+                setMessage(event.target.value);
+              }}
+            />
+            <Button
+              onChange={(e) => setMessage(e.target.value)}
+              fullWidth
+              variant="outlined"
+              color="primary"
+              type="submit"
+              margin="large"
+            >
+              Edit Your Message
+            </Button>
           </form>
         )}
+      </div>
+
+      <div>
+        {user._id === post.author._id ||
+          (post.messages.length > 0 &&
+            post.messages.map((msg) => (
+              <div key={msg._id}>
+                <h2>Message: {msg.content}</h2>
+                <h3>From: {msg.fromUser.username}</h3>
+              </div>
+            )))}
       </div>
     </div>
   );

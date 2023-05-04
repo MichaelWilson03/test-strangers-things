@@ -8,40 +8,44 @@ export default function Profile() {
   const { postId } = useParams();
 
   const { posts } = useOutletContext();
-  const { message } = useOutletContext();
+  // const { message } = useOutletContext();
 
-  const isAuthor = message?.fromUser?.id === user?.id;
-
-  useEffect(() => {
-    async function getMessages() {
-      try {
-        const msgToMe = await Promise.resolve(
-          user?.messages?.filter((message) => message.fromUser._id !== user._id)
-        );
-        console.log("msgToMe:", msgToMe);
-        const msgFromMe = await Promise.resolve(
-          user?.messages?.filter((message) => message.fromUser._id === user._id)
-        );
-        console.log("msgFromMe:", msgFromMe);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getMessages();
-  }, [user, userId, postId, posts]);
+  const msgsToMe = user?.messages?.filter(
+    (message) => message.fromUser._id !== user._id
+  );
+  const msgFromMe = user?.messages?.filter(
+    (message) => message.fromUser._id === user._id
+  );
 
   return (
     <div className="container">
       <h1>Welcome {user.username}!</h1>
-      <br />
-      <span>Your messages:</span>
+      <br /> <h2>Your Messages:</h2>
       <br />
       <ul>
-        {user.messages &&
-          user.messages.map((message) => (
+        {user._id &&
+          msgsToMe.map((message) => (
             <>
               <div>
-                <div key={posts._id}>{message.content} </div>
+                <div className="message" key={posts._id}>
+                  {message.content}{" "}
+                </div>
+              </div>
+              <h3>From: {message.fromUser.username}</h3>
+            </>
+          ))}
+      </ul>
+      <h2>Messages Sent:</h2>
+      <br />
+      <ul>
+        {user._id &&
+          msgFromMe.map((message) => (
+            // user.messages.map((message) => (
+            <>
+              <div>
+                <div className="message" key={posts._id}>
+                  {message.content}{" "}
+                </div>
               </div>
               <h3>From: {message.fromUser.username}</h3>
             </>

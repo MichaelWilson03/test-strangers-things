@@ -12,30 +12,33 @@ export default function Root() {
   const [fromUser, setFromUser] = useState("");
   const [isAuthor, setIsAuthor] = useState(false);
   const [content, setContent] = useState("");
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const navigate = useNavigate;
   const localToken = localStorage.getItem("token");
   const { postId } = useParams();
 
-  async function fetchPosts() {
-    try {
-      const response = await fetch(`${BASE_URL}/posts`);
-
-      const info = await response.json();
-
-      setPosts(info.data.posts);
-      setMessage(info.data.message);
-      console.log(setMessage);
-      console.log(setPosts);
-      console.log(info.data);
-      console.log(info);
-      return info;
-    } catch (err) {
-      console.log(err);
-    }
-  }
   useEffect(() => {
+    async function fetchPosts() {
+      try {
+        setIsLoadingPosts(true);
+        const response = await fetch(`${BASE_URL}/posts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localToken}`,
+          },
+        });
+        const info = await response.json();
+        {
+          setPosts(info.data.posts);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoadingPosts(false);
+      }
+    }
     fetchPosts();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     async function myData() {
@@ -49,48 +52,17 @@ export default function Root() {
             },
           });
           const result = await response.json();
-          if (result.success) {
+          {
             setUser(result.data);
           }
-          // console.log(result);
         } catch (err) {
           console.error(err);
         }
       }
     }
     myData(token, setToken, setUser, setMessage);
-  }, [token, setToken, setUser, setMessage, postId]);
-  useEffect(() => {
-    async function postMessage() {
-      try {
-        const response = await fetch(`${BASE_URL}/posts/${postId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            content: content,
-            fromUser: fromUser,
-          }),
-        });
-        const result = await response.json();
-        if (result.success) {
-          setPosts([...posts, result.data]);
-          setContent(content);
-          setFromUser(fromUser);
-        }
-        // console.log(result);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    postMessage();
-  }, [token, setFromUser, setUser, posts, postId, content]);
-
-  useEffect(() => {
-    fetchPosts();
   }, [token]);
+
   return (
     <div>
       <Navbar user={user} setUser={setUser} setToken={setToken} />
@@ -109,6 +81,7 @@ export default function Root() {
           token,
           user,
           setPosts,
+          isLoadingPosts,
         }}
       />
     </div>

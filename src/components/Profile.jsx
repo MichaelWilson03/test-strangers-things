@@ -58,21 +58,26 @@ export default function Profile() {
           </ul>
         </div>
       )}
-      <div className="new_user">
+      <div>
+        <h1 className="home_page">Welcome To Stranger's Things!</h1>
+        <br />
         {!token && (
           <>
-            <Link
-              to={"/login"}
-              style={{ color: "blue", textDecoration: "none" }}
-            >
-              Login
-            </Link>
-            <Link
-              to={"/register"}
-              style={{ color: "blue", textDecoration: "none" }}
-            >
-              Register
-            </Link>
+            <div className="new_user">
+              <br />
+              <Link
+                to={"/login"}
+                style={{ color: "blue", textDecoration: "none" }}
+              >
+                Login
+              </Link>
+              <Link
+                to={"/register"}
+                style={{ color: "blue", textDecoration: "none" }}
+              >
+                Register
+              </Link>
+            </div>
           </>
         )}
       </div>

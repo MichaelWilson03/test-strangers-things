@@ -5,9 +5,11 @@ export default function Welcome() {
   return (
     <div className="home_page">
       <h1>Welcome To Stranger's Things!</h1>
+      <br />
       {!token && (
         <>
           <div className="new_user">
+            <br />
             <Link to="/login" style={{ color: "blue", textDecoration: "none" }}>
               Login
             </Link>

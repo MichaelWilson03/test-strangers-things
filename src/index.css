@@ -113,3 +113,12 @@ a {
 .post-title {
   font-size: 20px;
 }
+
+.new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 30px;
+  margin: 15px;
+}

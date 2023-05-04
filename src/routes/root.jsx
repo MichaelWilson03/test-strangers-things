@@ -1,8 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../lib/util";
 import { useParams } from "react-router-dom";
+import MenuAppBar from "../components/MenuAppBar";
 
 export default function Root() {
   const [token, setToken] = useState("");
@@ -65,7 +66,7 @@ export default function Root() {
 
   return (
     <div>
-      <Navbar user={user} setUser={setUser} setToken={setToken} />
+      <MenuAppBar user={user} setUser={setUser} setToken={setToken} />
 
       <Outlet
         context={{

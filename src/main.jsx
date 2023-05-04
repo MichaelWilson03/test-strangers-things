@@ -12,9 +12,10 @@ import NewPost from "./components/NewPost";
 import Root from "./routes/root";
 import Post from "./components/Post";
 import ErrorPage from "./error-page";
-import Navbar from "./components/Navbar";
+
 import PostMessage from "./components/PostMessage";
-import SingleMessage from "./components/SingleMessage";
+
+import MenuAppBar from "./components/MenuAppBar";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Welcome />,
       },
-      { path: "/", element: <Navbar /> },
+      
       { path: "/posts", element: <Posts /> },
       {
         path: "/profile",
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
         path: "/posts/:postId/messages ",
         element: <PostMessage />,
       },
+      { path: "/", element: <MenuAppBar /> },
       // { path: "profile/:userId", element: <SingleMessage /> },
     ],
   },

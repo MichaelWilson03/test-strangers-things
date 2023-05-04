@@ -1,15 +1,10 @@
-import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 export default function Profile() {
   const { user } = useOutletContext();
-  const { userId } = useParams();
-  const { postId } = useParams();
 
   const { posts } = useOutletContext();
-  let token = localStorage.getItem("token");
-  // const { message } = useOutletContext();
 
   const msgsToMe = user?.messages?.filter(
     (message) => message.fromUser._id !== user._id

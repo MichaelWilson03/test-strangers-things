@@ -1,8 +1,8 @@
-import NativeSelectInput from "@mui/material/NativeSelect/NativeSelectInput";
-import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
 import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 export default function Post() {
   const { postId } = useParams();
@@ -12,7 +12,6 @@ export default function Post() {
     useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
-  // const postMessages = user?.messages?.filter(p => p.post._id === postId);
 
   async function handleMessage(e) {
     e.preventDefault();
@@ -64,11 +63,7 @@ export default function Post() {
                       setMessage(event.target.value);
                     }}
                   />
-                  {/* <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              /> */}
+
                   <Button
                     onChange={(e) => setMessage(e.target.value)}
                     fullWidth
@@ -96,16 +91,16 @@ export default function Post() {
                     setMessage(event.target.value);
                   }}
                 />
-                <Button
+                <ButtonGroup
                   onChange={(e) => setMessage(e.target.value)}
-                  fullWidth
                   variant="outlined"
                   color="primary"
                   type="submit"
                   margin="large"
                 >
-                  Edit Your Message
-                </Button>
+                  <Button>Edit Your Post</Button>
+                  <Button>Delete Your Post</Button>
+                </ButtonGroup>
               </form>
             )}
             <div>

@@ -31,11 +31,6 @@ export default function Posts() {
     <>
       <h1 className="header">POSTS</h1>
 
-      {localToken && (
-        <Link to={`/new-post`}>
-          <h3 className="new_post_link"> Create New Post</h3>
-        </Link>
-      )}
       <h1>Search Posts</h1>
       <form>
         <input

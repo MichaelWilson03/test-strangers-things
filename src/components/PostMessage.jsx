@@ -1,12 +1,11 @@
-import { BASE_URL } from "../lib/util";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function postMessage({ post, token }) {
+export default function postMessage() {
   //   const token = localStorage.getItem("token");
-  const { postId } = useParams();
+
   const [content, setContent] = useState("");
-  const { message, posts } = useOutletContext();
+  const { posts } = useOutletContext();
 
   return (
     <div>

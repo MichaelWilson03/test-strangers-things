@@ -1,26 +1,21 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Post() {
   let { method } = useParams();
   const [title, setTitle] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [price, setPrice] = useState("");
-  // const [willDeliver, setWillDeliver] = useState(false);
-  // const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [willDeliver, setWillDeliver] = useState(false);
+
   const { postId } = useParams();
-  // const [deleted, setDeleted] = useState(false);
-  // const [isActive, setIsActive] = useState(true);
-  // const [edit, setEdit] = useState([]);
-  // const [data, setData] = useState([]);
+
   let token = localStorage.getItem("token");
-  const navigate = useNavigate();
-  
+  let navigate = useNavigate();
 
   const {
     posts,
@@ -29,9 +24,43 @@ export default function Post() {
     user,
     setFromUser,
     isLoadingPosts,
+    setPosts,
   } = useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          post: {
+            title: title,
+            description: description,
+            price: price,
+            willDeliver: willDeliver,
+          },
+        }),
+      });
+      const result = await response.json();
+      console.log(result);
+      if (result.success) {
+        setPosts([...posts], {
+          ...post,
+          title,
+          description,
+          price,
+          willDeliver,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const deletePost = async (id) => {
     try {
@@ -44,16 +73,18 @@ export default function Post() {
       });
       const result = await response.json();
       console.log(result);
-      if (result.success) {
-        setDeleted(true);
-        alert("Post deleted");
+      if (result.success === true) {
+        // setDeleted(true);
+        // setPosts(newPosts);
+        setPosts([...posts]);
+        navigate("/posts");
       }
       if (!result.success) {
         console.log(result.error.message);
 
         return;
       }
-      navigate("/posts");
+      // navigate("/posts");
     } catch (err) {
       console.error(err);
     }
@@ -126,28 +157,7 @@ export default function Post() {
 
             {user._id === post.author._id && (
               <div>
-                <Button
-                  onClick={() => deletePost(post._id)}
-                  variant="outlined"
-                  color="primary"
-                  type="submit"
-                  margin="large"
-                >
-                  Delete Post
-                </Button>
-
-                <Button
-                  onClick={() => navigate(`/posts/${postId}/edit`)}
-                  variant="outlined"
-                  color="primary"
-                  type="submit"
-                  margin="large"
-                  link
-                  to={`/posts/${postId}/edit`}
-                >
-                  Edit Post
-                </Button>
-                {/* <form>
+                <form>
                   <label>Title</label>
                   <input
                     type="text"
@@ -173,7 +183,7 @@ export default function Post() {
                     onChange={(e) => setWillDeliver(e.target.checked)}
                   />
                   <Button
-                    onClick={updatePost}
+                    onClick={handleUpdate}
                     size="large"
                     variant="outlined"
                     color="primary"
@@ -182,7 +192,17 @@ export default function Post() {
                   >
                     {method === "Edit" ? "Save" : "Edit Post"}
                   </Button>
-                </form> */}
+                </form>
+                <Button
+                  onChange={(e) => setPosts(e.target.value)}
+                  onClick={() => deletePost(post._id)}
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  margin="large"
+                >
+                  Delete Post
+                </Button>
               </div>
             )}
             <div>

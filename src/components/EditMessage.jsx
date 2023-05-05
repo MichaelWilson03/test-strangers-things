@@ -88,7 +88,7 @@ export default function EditMessage() {
       willDeliver: willDeliver,
     };
     try {
-      const response = await fetch(`${BASE_URL}/posts/${user.username}/edit}`, {
+      const response = await fetch(`${BASE_URL}/posts/`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

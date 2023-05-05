@@ -75,7 +75,7 @@ export default function MenuAppBar({ user, setUser, setToken }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar key={user.username}>
           <IconButton
             size="large"
             edge="start"

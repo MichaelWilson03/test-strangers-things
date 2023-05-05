@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <PostMessage />,
       },
       { path: "/", element: <MenuAppBar /> },
-      { path: "/posts/:postId/edit", element: <EditMessage /> },
+      { path: "/posts/:postId", element: <EditMessage /> },
     ],
   },
 ]);

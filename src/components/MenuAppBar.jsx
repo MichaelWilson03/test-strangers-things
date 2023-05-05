@@ -99,10 +99,12 @@ export default function MenuAppBar({ user, setUser, setToken }) {
                 // onClick={handleMenu}
                 color="inherit"
               >
-                <MenuItem onClick={handleClose}>
-                  {/* <AccountCircle /> */}
-                  {accountCircleMenuItems}
-                </MenuItem>
+                <>
+                  <MenuItem onClick={handleClose}>
+                    {/* <AccountCircle /> */}
+                    {accountCircleMenuItems}
+                  </MenuItem>
+                </>
               </IconButton>
               <Menu
                 id="menu-appbar"

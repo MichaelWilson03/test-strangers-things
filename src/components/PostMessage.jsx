@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function postMessage() {
-  //   const token = localStorage.getItem("token");
-
   const [content, setContent] = useState("");
   const { posts } = useOutletContext();
-
+  const navigate = useNavigate();
   return (
     <div>
       <form
@@ -14,6 +12,7 @@ export default function postMessage() {
           e.preventDefault();
           setContent(e.target.message.value);
           setPosts([...posts]);
+          navigate("/posts");
         }}
       >
         <input

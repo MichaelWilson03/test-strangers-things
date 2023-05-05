@@ -2,16 +2,62 @@ import { useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../lib/util";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
-export default function Post() {
-  const { postId } = useParams();
-  let token = localStorage.getItem("token");
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  const { posts, message, setMessage, user, setFromUser, isLoadingPosts } =
-    useOutletContext();
+export default function Post() {
+  let { method } = useParams();
+  const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [price, setPrice] = useState("");
+  // const [willDeliver, setWillDeliver] = useState(false);
+  // const [location, setLocation] = useState("");
+  const { postId } = useParams();
+  // const [deleted, setDeleted] = useState(false);
+  // const [isActive, setIsActive] = useState(true);
+  // const [edit, setEdit] = useState([]);
+  // const [data, setData] = useState([]);
+  let token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  
+
+  const {
+    posts,
+    message,
+    setMessage,
+    user,
+    setFromUser,
+    isLoadingPosts,
+  } = useOutletContext();
 
   const post = posts.find((p) => p._id === postId);
+
+  const deletePost = async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      console.log(result);
+      if (result.success) {
+        setDeleted(true);
+        alert("Post deleted");
+      }
+      if (!result.success) {
+        console.log(result.error.message);
+
+        return;
+      }
+      navigate("/posts");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   async function handleMessage(e) {
     e.preventDefault();
@@ -55,18 +101,17 @@ export default function Post() {
                 <form onSubmit={handleMessage}>
                   <TextField
                     required
-                    fullWidth
-                    label="Title"
+                    label="Your Message"
                     variant="outlined"
                     value={message}
                     onChange={(event) => {
                       setMessage(event.target.value);
                     }}
                   />
+                  <br />
 
                   <Button
                     onChange={(e) => setMessage(e.target.value)}
-                    fullWidth
                     variant="outlined"
                     color="primary"
                     type="submit"
@@ -80,28 +125,65 @@ export default function Post() {
             )}
 
             {user._id === post.author._id && (
-              <form onSubmit={handleMessage}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Title"
-                  variant="outlined"
-                  value={message}
-                  onChange={(event) => {
-                    setMessage(event.target.value);
-                  }}
-                />
-                <ButtonGroup
-                  onChange={(e) => setMessage(e.target.value)}
+              <div>
+                <Button
+                  onClick={() => deletePost(post._id)}
                   variant="outlined"
                   color="primary"
                   type="submit"
                   margin="large"
                 >
-                  <Button>Edit Your Post</Button>
-                  <Button>Delete Your Post</Button>
-                </ButtonGroup>
-              </form>
+                  Delete Post
+                </Button>
+
+                <Button
+                  onClick={() => navigate(`/posts/${postId}/edit`)}
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  margin="large"
+                  link
+                  to={`/posts/${postId}/edit`}
+                >
+                  Edit Post
+                </Button>
+                {/* <form>
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <label>Description</label>
+                  <input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <label>Price</label>
+                  <input
+                    type="text"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <label>Will Deliver?</label>
+                  <input
+                    type="checkbox"
+                    checked={willDeliver}
+                    onChange={(e) => setWillDeliver(e.target.checked)}
+                  />
+                  <Button
+                    onClick={updatePost}
+                    size="large"
+                    variant="outlined"
+                    color="primary"
+                    type="submit"
+                    margin="large"
+                  >
+                    {method === "Edit" ? "Save" : "Edit Post"}
+                  </Button>
+                </form> */}
+              </div>
             )}
             <div>
               {user._id === post.author._id ||

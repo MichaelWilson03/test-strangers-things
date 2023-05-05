@@ -16,6 +16,7 @@ import ErrorPage from "./error-page";
 import PostMessage from "./components/PostMessage";
 
 import MenuAppBar from "./components/MenuAppBar";
+import EditMessage from "./components/EditMessage";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <Welcome />,
       },
-      
+
       { path: "/posts", element: <Posts /> },
       {
         path: "/profile",
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
         element: <PostMessage />,
       },
       { path: "/", element: <MenuAppBar /> },
-      // { path: "profile/:userId", element: <SingleMessage /> },
+      { path: "/posts/:postId/edit", element: <EditMessage /> },
     ],
   },
 ]);

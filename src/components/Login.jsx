@@ -33,9 +33,11 @@ export default function Login() {
       }
       setToken(result.data.token);
       localStorage.setItem("token", result.data.token);
+
       navigate("/");
     } catch (error) {}
   }
+
   return (
     <>
       <h1 className="header">LOGIN</h1>

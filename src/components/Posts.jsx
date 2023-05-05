@@ -3,7 +3,6 @@ import { Link, useOutletContext } from "react-router-dom";
 
 export default function Posts() {
   const { posts, setPosts } = useOutletContext();
-  const localToken = localStorage.getItem("token");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {

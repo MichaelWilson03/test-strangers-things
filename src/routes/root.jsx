@@ -83,6 +83,7 @@ export default function Root() {
           user,
           setPosts,
           isLoadingPosts,
+          setIsLoadingPosts,
         }}
       />
     </div>

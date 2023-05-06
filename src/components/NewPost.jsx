@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import { BASE_URL } from "../lib/util";
 import { useOutletContext, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
@@ -9,13 +11,38 @@ export default function NewPost() {
   const [price, setPrice] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
   let { method } = useParams();
-
-  const { posts, setPosts } = useOutletContext();
-
+  const { postId } = useParams();
+  const { posts, setPosts, setIsLoadingPosts, isLoadingPosts } =
+    useOutletContext();
+  const token = localStorage.getItem("token");
+  let post = posts.find((p) => p._id === postId);
+  useEffect(() => {
+    post = posts.find((p) => p._id === postId);
+  }, [posts]);
+  async function fetchPosts() {
+    try {
+      setIsLoadingPosts(true);
+      const response = await fetch(`${BASE_URL}/posts`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const info = await response.json();
+      {
+        setPosts(info.data.posts);
+        setIsLoadingPosts(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    // } finally {
+    //   window.location.reload();
+    // }
+  }
   async function makePost(e) {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(`${BASE_URL}/posts`, {
         method: "POST",
         headers: {
@@ -36,13 +63,18 @@ export default function NewPost() {
         console.log(result.error.message);
       }
       if (result.success) {
+        setTitle("");
+        setDescription("");
+        setPrice("");
+        setWillDeliver(false);
+        fetchPosts();
       }
       // navigate("/posts");
     } catch (err) {
       console.error(err);
     }
   }
-
+  if (isLoadingPosts) return <div>Loading</div>;
   return (
     <>
       <div>
@@ -86,6 +118,9 @@ export default function NewPost() {
               margin="large"
             >
               {method === "Edit" ? "Save" : "Create"}
+            </Button>
+            <Button size="large" variant="outlined" color="primary">
+              <Link to="/posts">Back To Posts</Link>
             </Button>
           </form>
         </div>

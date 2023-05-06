@@ -4,6 +4,8 @@ import { BASE_URL } from "../lib/util";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Post() {
   let { method } = useParams();
@@ -25,12 +27,39 @@ export default function Post() {
     setFromUser,
     isLoadingPosts,
     setPosts,
+    setIsLoadingPosts,
   } = useOutletContext();
 
-  const post = posts.find((p) => p._id === postId);
+  let post = posts.find((p) => p._id === postId);
+  useEffect(() => {
+    post = posts.find((p) => p._id === postId);
+  }, [posts]);
+
+  async function fetchPosts() {
+    try {
+      setIsLoadingPosts(true);
+      const response = await fetch(`${BASE_URL}/posts`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const info = await response.json();
+      {
+        setPosts(info.data.posts);
+        setIsLoadingPosts(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    // } finally {
+    //   window.location.reload();
+    // }
+  }
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {
+      setIsLoadingPosts(true);
       const response = await fetch(`${BASE_URL}/posts/${postId}`, {
         method: "PATCH",
         headers: {
@@ -56,9 +85,12 @@ export default function Post() {
           price,
           willDeliver,
         });
+        fetchPosts();
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoadingPosts(false);
     }
   };
 
@@ -73,11 +105,11 @@ export default function Post() {
       });
       const result = await response.json();
       console.log(result);
-      if (result.success === true) {
+      if (result.success) {
         // setDeleted(true);
         // setPosts(newPosts);
         setPosts([...posts]);
-        navigate("/posts");
+        fetchPosts();
       }
       if (!result.success) {
         console.log(result.error.message);
@@ -110,11 +142,15 @@ export default function Post() {
       if (result.success) {
         setMessage("");
         setFromUser([...posts, result.data.message.fromUser]);
+        fetchPosts();
       }
     } catch (err) {
       console.error(err);
     }
   }
+  useEffect(() => {
+    post = posts.find((p) => p._id === postId);
+  }, [posts]);
 
   if (isLoadingPosts) return <div>Loading</div>;
 
@@ -142,6 +178,7 @@ export default function Post() {
                   <br />
 
                   <Button
+                    onSubmit={handleMessage}
                     onChange={(e) => setMessage(e.target.value)}
                     variant="outlined"
                     color="primary"
@@ -201,7 +238,7 @@ export default function Post() {
                   type="submit"
                   margin="large"
                 >
-                  Delete Post
+                  <Link to="/posts">Delete Post</Link>
                 </Button>
               </div>
             )}

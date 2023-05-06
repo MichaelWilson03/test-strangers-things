@@ -13,10 +13,7 @@ import Root from "./routes/root";
 import Post from "./components/Post";
 import ErrorPage from "./error-page";
 
-import PostMessage from "./components/PostMessage";
-
 import MenuAppBar from "./components/MenuAppBar";
-import EditMessage from "./components/EditMessage";
 
 const router = createBrowserRouter([
   {
@@ -38,12 +35,8 @@ const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/posts/:postId", element: <Post /> },
       { path: "/new-post", element: <NewPost /> },
-      {
-        path: "/posts/:postId/messages ",
-        element: <PostMessage />,
-      },
+
       { path: "/", element: <MenuAppBar /> },
-      { path: "/posts/:postId", element: <EditMessage /> },
     ],
   },
 ]);

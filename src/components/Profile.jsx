@@ -23,7 +23,7 @@ export default function Profile() {
           <ul key={user}>
             {user._id &&
               msgsToMe.map((message) => (
-                <>
+                <div key={message._id}>
                   <div>
                     <div className="message" key={posts._id}>
                       <span className="post_title">Regarding: </span>
@@ -32,7 +32,7 @@ export default function Profile() {
                     </div>
                   </div>
                   <h3>From: {message.fromUser.username}</h3>
-                </>
+                </div>
               ))}
           </ul>
           <h2>Messages Sent:</h2>
@@ -41,14 +41,12 @@ export default function Profile() {
             {user._id &&
               msgFromMe.map((message) => (
                 // user.messages.map((message) => (
-                <>
+                <div key={posts._id}>
                   <div>
-                    <div className="message" key={posts._id}>
-                      {message.content}{" "}
-                    </div>
+                    <div className="message">{message.content} </div>
                   </div>
                   <h3>From: {message.fromUser.username}</h3>
-                </>
+                </div>
               ))}
           </ul>
         </div>

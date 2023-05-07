@@ -4,13 +4,15 @@ import { BASE_URL } from "../lib/util";
 import { useOutletContext, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import FormGroup from "@mui/material/FormGroup";
+import TextField from "@mui/material/TextField";
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
-  let { method } = useParams();
   const { postId } = useParams();
   const { posts, setPosts, setIsLoadingPosts, isLoadingPosts } =
     useOutletContext();
@@ -36,9 +38,6 @@ export default function NewPost() {
     } catch (err) {
       console.log(err);
     }
-    // } finally {
-    //   window.location.reload();
-    // }
   }
   async function makePost(e) {
     e.preventDefault();
@@ -74,55 +73,77 @@ export default function NewPost() {
       console.error(err);
     }
   }
+  function handleBack(e) {
+    e.preventDefault();
+    navigate("/posts");
+  }
   if (isLoadingPosts) return <div>Loading</div>;
   return (
     <>
       <div>
         <h1 className="header">Create Post</h1>
         <div className="new_post_container">
-          <form onSubmit={() => setPosts([...posts])}>
-            <label>Title</label>
-            <input
-              className="m-2 block px-2"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <label>Description</label>
-            <input
-              className="m-2 block px-2"
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <label>Price</label>
-            <input
-              className="m-2 block px-2"
-              type="text"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <label>Will Deliver?</label>
-            <input
-              className="m-2 block px-2"
-              type="checkbox"
-              checked={willDeliver}
-              onChange={(e) => setWillDeliver(e.target.checked)}
-            />
-            <Button
-              onClick={makePost}
-              size="large"
-              variant="outlined"
-              color="primary"
-              type="submit"
-              margin="large"
-            >
-              {method === "Edit" ? "Save" : "Create"}
-            </Button>
-            <Button size="large" variant="outlined" color="primary">
-              <Link to="/posts">Back To Posts</Link>
-            </Button>
-          </form>
+          <Box
+            component="form"
+            sx={{
+              "& .MuiTextField-root": { m: 1, width: "25ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <FormGroup>
+              <div>
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Title Required"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <br />
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Description Required"
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                <br />
+                <TextField
+                  required
+                  id="outlined-required"
+                  label=" Price $"
+                  type="text"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+                <br />
+                <label className="check-box-text">Will Deliver?</label>
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  checked={willDeliver}
+                  onChange={(e) => setWillDeliver(e.target.checked)}
+                />
+                <br />
+                <div className="form-buttons">
+                  <div className="edit-button">
+                    <Button
+                      onClick={makePost}
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                      margin="large"
+                    >
+                      <Link to="/posts">{"Create Post"}</Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </FormGroup>
+          </Box>
         </div>
       </div>
     </>

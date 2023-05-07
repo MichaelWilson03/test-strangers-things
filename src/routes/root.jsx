@@ -12,11 +12,9 @@ export default function Root() {
   const [message, setMessage] = useState("");
   const [fromUser, setFromUser] = useState("");
   const [isAuthor, setIsAuthor] = useState(false);
-  const [content, setContent] = useState("");
+
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const navigate = useNavigate;
   const localToken = localStorage.getItem("token");
-  const { postId } = useParams();
 
   useEffect(() => {
     async function fetchPosts() {

@@ -6,9 +6,10 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import FormGroup from "@mui/material/FormGroup";
 
 export default function Post() {
-  let { method } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -17,7 +18,6 @@ export default function Post() {
   const { postId } = useParams();
 
   let token = localStorage.getItem("token");
-  let navigate = useNavigate();
 
   const {
     posts,
@@ -52,9 +52,6 @@ export default function Post() {
     } catch (err) {
       console.log(err);
     }
-    // } finally {
-    //   window.location.reload();
-    // }
   }
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -94,7 +91,7 @@ export default function Post() {
     }
   };
 
-  const deletePost = async (id) => {
+  const deletePost = async () => {
     try {
       const response = await fetch(`${BASE_URL}/posts/${postId}`, {
         method: "DELETE",
@@ -116,7 +113,6 @@ export default function Post() {
 
         return;
       }
-      // navigate("/posts");
     } catch (err) {
       console.error(err);
     }
@@ -166,27 +162,30 @@ export default function Post() {
             {user._id !== post.author._id && (
               <>
                 <form onSubmit={handleMessage}>
-                  <TextField
-                    required
-                    label="Your Message"
-                    variant="outlined"
-                    value={message}
-                    onChange={(event) => {
-                      setMessage(event.target.value);
-                    }}
-                  />
+                  <div>
+                    <TextField
+                      required
+                      label="Your Message"
+                      variant="outlined"
+                      value={message}
+                      onChange={(event) => {
+                        setMessage(event.target.value);
+                      }}
+                    />
+                  </div>
                   <br />
-
-                  <Button
-                    onSubmit={handleMessage}
-                    onChange={(e) => setMessage(e.target.value)}
-                    variant="outlined"
-                    color="primary"
-                    type="submit"
-                    margin="large"
-                  >
-                    Send Message
-                  </Button>
+                  <div>
+                    <Button
+                      onSubmit={handleMessage}
+                      onChange={(e) => setMessage(e.target.value)}
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                      margin="large"
+                    >
+                      Send Message
+                    </Button>
+                  </div>
                 </form>
                 <h2 className="messages">Messages You've Sent:</h2>
               </>
@@ -194,52 +193,81 @@ export default function Post() {
 
             {user._id === post.author._id && (
               <div>
-                <form>
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  <label>Description</label>
-                  <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                  <label>Price</label>
-                  <input
-                    type="text"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-                  <label>Will Deliver?</label>
-                  <input
-                    type="checkbox"
-                    checked={willDeliver}
-                    onChange={(e) => setWillDeliver(e.target.checked)}
-                  />
-                  <Button
-                    onClick={handleUpdate}
-                    size="large"
-                    variant="outlined"
-                    color="primary"
-                    type="submit"
-                    margin="large"
-                  >
-                    {method === "Edit" ? "Save" : "Edit Post"}
-                  </Button>
-                </form>
-                <Button
-                  onChange={(e) => setPosts(e.target.value)}
-                  onClick={() => deletePost(post._id)}
-                  variant="outlined"
-                  color="primary"
-                  type="submit"
-                  margin="large"
+                <Box
+                  component="form"
+                  sx={{
+                    "& .MuiTextField-root": { m: 1, width: "25ch" },
+                  }}
+                  noValidate
+                  autoComplete="off"
                 >
-                  <Link to="/posts">Delete Post</Link>
-                </Button>
+                  <FormGroup>
+                    <div>
+                      <TextField
+                        required
+                        id="outlined-required"
+                        label="Title Required"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                      />
+                      <br />
+                      <TextField
+                        required
+                        id="outlined-required"
+                        label="Description Required"
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                      <br />
+                      <TextField
+                        required
+                        id="outlined-required"
+                        label=" Price $"
+                        type="text"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                      />
+                      <br />
+                      <label className="check-box-text">Will Deliver?</label>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={willDeliver}
+                        onChange={(e) => setWillDeliver(e.target.checked)}
+                      />
+                      <br />
+                      <div className="form-buttons">
+                        <div className="edit-button">
+                          <Button
+                            onClick={handleUpdate}
+                            variant="outlined"
+                            color="primary"
+                            type="submit"
+                            margin="large"
+                          >
+                            <Link to="/posts">{"Edit Post"}</Link>
+                          </Button>
+                        </div>
+                        <div className="delete-button">
+                          <Button
+                            onChange={(e) => setPosts(e.target.value)}
+                            onClick={() => deletePost(post._id)}
+                            variant="outlined"
+                            color="primary"
+                            type="submit"
+                            margin="large"
+                          >
+                            <Link to="/posts">
+                              {"Edit" ? "Delete Post" : "Delete Post"}
+                            </Link>
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </FormGroup>
+                </Box>
               </div>
             )}
             <div>

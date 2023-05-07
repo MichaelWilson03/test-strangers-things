@@ -20,46 +20,51 @@ export default function MenuAppBar({ user, setUser, setToken }) {
   }
   const accountMenuItems = user.username
     ? [
-        <Link to={"/"} label="Home">
+        <Link to={"/"} label="Home" key="home">
           Home
         </Link>,
 
-        <Link to={"/posts"} label="Posts">
+        <Link to={"/posts"} label="Posts" key="posts">
           Posts
         </Link>,
-        <Link to={`/new-post`} label="Create New Post">
+        <Link to={`/new-post`} label="Create New Post" key="new-post">
           Create New Post
         </Link>,
       ]
     : [
-        <Link to={"/"} label="Home">
+        <Link to={"/"} label="Home" key="new-user-home">
           Home
         </Link>,
-        <Link to={"/posts"} label="Posts">
+        <Link to={"/posts"} label="Posts" key="new-user-posts">
           Posts
         </Link>,
-        <Link to={"/login"} label="Login">
+        <Link to={"/login"} label="Login" key="new-user-login">
           Login
         </Link>,
-        <Link to={"/register"} label="Register">
+        <Link to={"/register"} label="Register" key="new-user-register">
           Register
         </Link>,
       ];
   const accountCircleMenuItems = user.username
     ? [
-        <Link to={"/profile"} label="Profile">
+        <Link to={"/profile"} label="Profile" key="icon-profile">
           My Profile
         </Link>,
 
-        <Link onClick={handleLogout} to={"/login"}>
+        <Link
+          onClick={handleLogout}
+          to={"/login"}
+          label="Logout"
+          key="icon-logout"
+        >
           Logout
         </Link>,
       ]
     : [
-        <Link to={"/login"} label="Login">
+        <Link to={"/login"} label="Login" key="new-user-icon-login">
           Login
         </Link>,
-        <Link to={"/register"} label="Register">
+        <Link to={"/register"} label="Register" key="new-user-icon-register">
           Register
         </Link>,
       ];
@@ -96,15 +101,13 @@ export default function MenuAppBar({ user, setUser, setToken }) {
                 aria-label="account of current user"
                 aria-controls={accountCircleMenuItems}
                 aria-haspopup="true"
-                // onClick={handleMenu}
+                // onClick={handleClose}
                 color="inherit"
               >
-                <>
-                  <MenuItem onClick={handleClose}>
-                    {/* <AccountCircle /> */}
-                    {accountCircleMenuItems}
-                  </MenuItem>
-                </>
+                <MenuItem>
+                  {/* <AccountCircle /> */}
+                  {accountCircleMenuItems}
+                </MenuItem>
               </IconButton>
               <Menu
                 id="menu-appbar"

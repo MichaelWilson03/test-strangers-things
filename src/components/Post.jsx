@@ -247,7 +247,7 @@ export default function Post() {
                             type="submit"
                             margin="large"
                           >
-                            <Link to="/posts">{"Edit Post"}</Link>
+                            {"Edit" ? "Save" : "Edit Post"}
                           </Button>
                         </div>
                         <div className="delete-button">
